@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070d19">
+  <title>TTP Console · Analyst Workbench</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="unauthenticated">
+  <!-- Login View -->
+  <div id="loginView" class="login-shell" hidden>
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-monogram">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-title">TTP Console</span>
+          <span class="brand-sub">ANALYST WORKBENCH</span>
+        </div>
+      </div>
+      <p class="login-eyebrow">DEFENSIVE MOBILE INTELLIGENCE</p>
+      <h1 class="login-heading">Analyst Authentication</h1>
+      <p class="login-desc">Sign in to access authorized case investigations, APK evidence registries, and versioned ATT&amp;CK Mobile mappings.</p>
+      
+      <form id="loginForm" class="login-form">
+        <div class="field-group">
+          <label for="loginUsername">Analyst Username</label>
+          <input id="loginUsername" name="username" type="text" autocomplete="username" required placeholder="e.g. analyst">
+        </div>
+        <div class="field-group">
+          <label for="loginPassword">Credentials Key</label>
+          <input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder="••••••••••••••••">
+        </div>
+        <button class="button primary full" type="submit">
+          <span>Authenticate Session</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+        <p id="loginError" class="error-banner" role="alert" hidden></p>
+      </form>
+      
+      <div class="login-footer">
+        <div class="status-indicator-inline">
+          <span class="pulse-indicator"></span>
+          <span>Private Local Instance · Zero External Egress</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authenticated Application Shell -->
+  <div id="appView" class="app-layout" hidden>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-block">
+          <div class="brand-monogram small">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="brand-names">
+            <b class="brand-name">TTP Console</b>
+            <span class="brand-tag">v1.0 · Analyst Console</span>
+          </div>
+        </div>
+        <button id="sidebarCloseBtn" class="icon-button mobile-only" aria-label="Close Navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-category">WORKSPACE NAVIGATION</div>
+      <nav class="nav-menu" aria-label="Primary Application Navigation">
+        <button class="nav-link active" data-page="overview">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>Overview</span>
+        </button>
+
+        <button class="nav-link" data-page="cases">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Cases</span>
+        </button>
+
+        <button class="nav-link" data-page="samples">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+          <span>Samples</span>
+        </button>
+
+        <button class="nav-link" data-page="dataset">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+          </svg>
+          <span>Dataset Lab</span>
+        </button>
+
+        <button class="nav-link" data-page="analysis">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <path d="M11 8v6M8 11h6"/>
+          </svg>
+          <span>Analysis</span>
+        </button>
+
+        <button class="nav-link" data-page="attack">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+          </svg>
+          <span>ATT&amp;CK Mobile</span>
+        </button>
+
+        <button class="nav-link" data-page="evidence">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span>Evidence</span>
+        </button>
+
+        <button class="nav-link" data-page="reports">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Reports</span>
+        </button>
+
+        <button class="nav-link" data-page="activity">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Activity</span>
+        </button>
+
+        <button class="nav-link" data-page="settings">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+          </svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-status-box">
+        <div class="status-dot-pulse"></div>
+        <div class="status-text">
+          <b>Safe Ingestion Mode</b>
+          <small>Untrusted APKs are never executed</small>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <a class="framework-link" href="https://attack.mitre.org/matrices/mobile/android/" target="_blank" rel="noreferrer">
+          <span>ATT&amp;CK Android Matrix</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+        <button id="logoutBtn" class="logout-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobileMenuBtn" class="icon-button mobile-only" aria-label="Toggle Navigation Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="breadcrumbs">
+            <span>Workspace</span>
+            <span class="sep">/</span>
+            <b id="breadcrumbLabel">Overview</b>
+          </div>
+          <h1 id="pageTitle" class="page-title">Overview</h1>
+        </div>
+
+        <div class="topbar-right">
+          <div class="system-badge">
+            <span class="badge-dot"></span>
+            <span>PRIVATE WORKSPACE</span>
+          </div>
+          <div id="userRoleBadge" class="user-pill">
+            <span id="sessionUsername">analyst</span>
+            <span id="sessionRole" class="role-tag">ROLE: ANALYST</span>
+          </div>
+          <button class="button primary" id="newCaseBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>New Case</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW 1: Overview Page -->
+      <section id="overviewPage" class="content-view">
+        <!-- Hero Editorial Banner -->
+        <div class="editorial-hero">
+          <div class="hero-left">
+            <div class="eyebrow-chip">
+              <span class="pulse-cyan"></span>
+              CYBER THREAT INTELLIGENCE WORKBENCH
+            </div>
+            <h2 class="hero-title">Turn mobile telemetry into <em class="accent-text">verified ATT&amp;CK intelligence.</em></h2>
+            <p class="hero-sub">Examine authorized Android application packages (APKs), extract static indicators without code execution, and link technical evidence to versioned MITRE ATT&amp;CK Mobile techniques with analyst-driven confidence.</p>
+            <div class="hero-cta-row">
+              <button class="button hero-cta" id="heroNewCaseBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Start New Investigation</span>
+              </button>
+              <button class="button secondary" data-go="samples">
+                <span>Browse APK Inventory</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="pipeline-card">
+              <div class="pipeline-header">
+                <span class="pipeline-tag">ANALYSIS PIPELINE</span>
+                <span class="pipeline-live-chip">BOUNDED WORKER</span>
+              </div>
+              <div class="pipeline-flow">
+                <div class="pipeline-step">
+                  <div class="step-num">01</div>
+                  <div class="step-body">
+                    <b>Archive Intake &amp; Hashing</b>
+                    <small>SHA-256, SHA-1, MD5 verification</small>
+                  </div>
+                </div>
+                <div class="pipeline-step">
+                  <div class="step-num">02</div>
+                  <div class="step-body">
+                    <b>Static Parsing &amp; Defanging</b>
+                    <small>Manifest, permissions, components, strings</small>
+                  </div>
+                </div>
+                <div class="pipeline-step">
+                  <div class="step-num">03</div>
+                  <div class="step-body">
+                    <b>ATT&amp;CK Heuristic Mapping</b>
+                    <small>Versioned candidate TTP generation</small>
+                  </div>
+                </div>
+                <div class="pipeline-step active">
+                  <div class="step-num">04</div>
+                  <div class="step-body">
+                    <b>Analyst Decision &amp; Export</b>
+                    <small>Confirm, reject, annotate, and report</small>
+                  </div>
+                </div>
+              </div>
+              <div class="pipeline-footer">
+                <span>ZERO REMOTE EGRESS</span>
+                <span>SANDBOX ISOLATED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards Grid -->
+        <div id="overviewDemoNotice" class="overview-demo-notice" role="note" hidden>
+          <b>DEMO PREVIEW · ILLUSTRATIVE DATA ONLY</b>
+          <span>The example counts and rows below are not real APK submissions, analysis results, or threat intelligence. No demo records are saved; actual workspace counts and entries appear when available.</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">ACTIVE INVESTIGATIONS</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="metric-val" id="overviewCases">0</div>
+            <div class="metric-meta" id="overviewCasesMeta">Authorized cases in workspace</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">ANALYZED APK SAMPLES</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="metric-val" id="overviewSamples">0</div>
+            <div class="metric-meta" id="overviewSamplesMeta">SHA-256 indexed APK packages</div>
+          </div>
+
+          <div class="metric-card highlight-metric">
+            <div class="metric-header">
+              <span class="metric-label">MAPPINGS AWAITING REVIEW</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/></svg>
+            </div>
+            <div class="metric-val" id="overviewReview">0</div>
+            <div class="metric-meta" id="overviewReviewMeta">Candidate TTP suggestions</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">PARSING QUEUE JOBS</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="metric-val" id="overviewQueued">0</div>
+            <div class="metric-meta" id="overviewQueuedMeta">Subprocesses currently parsing</div>
+          </div>
+          <div id="overviewDatasetGlance" class="overview-dataset-glance" aria-live="polite">
+            <div>
+              <span class="metric-label">BUNDLED DATASET · SEPARATE FROM APK COUNTS</span>
+              <b class="overview-dataset-glance-value">Loading dataset summary…</b>
+              <span class="metric-meta">Reading metadata records and source labels</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-toolbar section-margin overview-dataset-heading">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Bundled Dataset Snapshot</h2>
+            <p class="section-sub">Real CSV metadata results, separate from uploaded APKs and their static analysis.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="button secondary" data-go="dataset">Explore Dataset Lab</button>
+          </div>
+        </div>
+        <div id="overviewDatasetMetrics" class="metrics-grid overview-dataset-metrics" aria-live="polite">
+          <div class="metric-card"><span class="metric-label">DATASET</span><b class="metric-val">Loading</b><span class="metric-meta">Reading bundled CSV summary</span></div>
+        </div>
+        <div class="overview-dual-grid overview-dataset-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Source Label Counts</h3>
+                <p class="panel-subtitle">Raw CSV labels and record share; meaning is not inferred.</p>
+              </div>
+            </div>
+            <div id="overviewDatasetLabels" class="dataset-label-stats">
+              <p class="table-message">Loading source label counts...</p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Descriptive Feature Means</h3>
+                <p class="panel-subtitle">CSV feature averages grouped by raw source label.</p>
+              </div>
+            </div>
+            <div id="overviewDatasetFeatures" class="table-container">
+              <p class="table-message">Loading descriptive statistics...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Column Asymmetric Review & Activity Grid -->
+        <div class="overview-dual-grid">
+          <!-- Latest Uploads -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title" id="overviewSamplesHeading">Latest APK Submissions</h3>
+                <p class="panel-subtitle" id="overviewSamplesSubtitle">Authorized samples intake registry; static analysis only.</p>
+              </div>
+              <button class="text-link" data-go="samples">View All Samples →</button>
+            </div>
+            <div id="overviewSamplesList" class="compact-feed"></div>
+          </div>
+
+          <!-- Review Queue -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Review Queue</h3>
+                <p class="panel-subtitle" id="overviewReviewsSubtitle">Candidate ATT&amp;CK techniques requiring analyst validation.</p>
+              </div>
+              <button class="text-link" data-go="attack">Taxonomy Matrix →</button>
+            </div>
+            <div id="overviewReviews" class="compact-feed"></div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="panel section-margin">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title">Frequently Asked Questions</h3>
+              <p class="panel-subtitle">Operational guidance for APK review and the separate bundled metadata catalogue.</p>
+            </div>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-card">
+              <h4>How do I start an investigation?</h4>
+              <p>Select <b>Start New Investigation</b>, enter a case title and any useful context, then save. Open the case from Cases to manage its samples and notes.</p>
+            </div>
+            <div class="faq-card">
+              <h4>How do I add an APK?</h4>
+              <p>Open a case, choose <b>Add Sample</b>, and select an APK archive containing an Android manifest. It is stored locally and inspected statically; uploaded code is never executed.</p>
+            </div>
+            <div class="faq-card">
+              <h4>Where can I see sample results?</h4>
+              <p>Open a sample from the Samples page or Latest APK Submissions. Review its analysis tabs for manifest, permissions, components, strings, files, and candidate mappings. Static findings are leads, not a malware verdict.</p>
+            </div>
+            <div class="faq-card">
+              <h4>How do I review ATT&amp;CK suggestions?</h4>
+              <p>Inspect each candidate technique alongside its linked evidence. Confirm, reject, or defer it with an analyst rationale; verify the evidence before treating a suggestion as a finding.</p>
+            </div>
+            <div class="faq-card">
+              <h4>How do I use the bundled dataset?</h4>
+              <p>Open Dataset Lab to search package names or hashes, filter by the source label, inspect profiles, and export filtered CSV rows. These records are metadata, not APK analysis results.</p>
+            </div>
+            <div class="faq-card">
+              <h4>How do I export my work?</h4>
+              <p>Use Reports for sample or case HTML/JSON reports. Samples also has an inventory CSV export; Dataset Lab exports the currently filtered dataset profiles.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Activity Feed -->
+        <div class="panel section-margin">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title">Chronological Audit Activity</h3>
+              <p class="panel-subtitle">Immutable audit trail of uploads, review decisions, exports, and changes.</p>
+            </div>
+            <button class="text-link" data-go="activity">Audit Log →</button>
+          </div>
+          <div id="overviewActivity" class="compact-feed"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: Cases Page -->
+      <section id="casesPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Case Investigations</h2>
+            <p class="section-sub">Organize mobile security findings, custody notes, handling markings, and sample linkages.</p>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="caseSearch" class="search-input" placeholder="Search case title, source, owner, tags..." aria-label="Search Cases">
+            </div>
+            <select id="caseStatusFilter" class="select-input">
+              <option value="active">Active Cases</option>
+              <option value="closed">Closed Cases</option>
+              <option value="archived">Archived Cases</option>
+              <option value="all">All Cases</option>
+            </select>
+            <button class="button primary" id="createCaseBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Create Case</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>CASE INVESTIGATION</th>
+                <th>OWNER</th>
+                <th>SOURCE</th>
+                <th>HANDLING</th>
+                <th>TAGS</th>
+                <th>STATUS</th>
+                <th>SAMPLES</th>
+                <th>CREATED</th>
+                <th class="actions-col"></th>
+              </tr>
+            </thead>
+            <tbody id="caseRows"></tbody>
+          </table>
+        </div>
+        <div id="caseEmpty" class="empty-state" hidden>
+          <div class="empty-icon-wrap">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>No investigations match your query</h3>
+          <p>Create a new case to organize authorized APK samples or adjust filter criteria.</p>
+          <button class="button primary" id="emptyCreateCaseBtn">Create Case</button>
+        </div>
+      </section>
+
+      <!-- VIEW 3: Samples Page -->
+      <section id="samplesPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">APK Sample Inventory</h2>
+            <p class="section-sub">Cryptographic content identities, package metadata, duplicate tracking, and analysis progress.</p>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="sampleSearch" class="search-input" placeholder="Search package, SHA-256, filename, case..." aria-label="Search Samples">
+            </div>
+            <select id="sampleStatusFilter" class="select-input">
+              <option value="all">All Statuses</option>
+              <option value="completed">Completed</option>
+              <option value="partial">Partial</option>
+              <option value="running">Running</option>
+              <option value="queued">Queued</option>
+              <option value="failed">Failed</option>
+            </select>
+            <button type="button" class="button primary" id="addSampleBtn">Add Sample</button>
+            <a class="button secondary" href="/api/samples/export.csv">Export Inventory</a>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SAMPLE / CASE</th>
+                <th>PACKAGE IDENTIFIER</th>
+                <th>VERSION</th>
+                <th>SHA-256 IDENTITY</th>
+                <th>ANALYSIS STATUS</th>
+                <th>UPLOADED</th>
+                <th class="actions-col">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="sampleRows"></tbody>
+          </table>
+        </div>
+        <div id="sampleEmpty" class="empty-state" hidden>
+          <div class="empty-icon-wrap">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h3>No APK samples found</h3>
+          <p>Add an authorized APK to a case. Samples are stored locally and inspected without executing their code.</p>
+          <button class="button primary" id="emptyAddSampleBtn">Add Sample</button>
+        </div>
+      </section>
+
+      <!-- Dataset Lab: bundled metadata profiles; not uploaded APK samples -->
+      <section id="datasetPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Bundled Dataset Lab</h2>
+            <p class="section-sub">Browse real metadata profiles from the bundled CSV, separately from APK uploads and static analysis.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="button secondary" id="exportDatasetBtn">Export filtered profiles</button>
+          </div>
+        </div>
+
+        <div id="datasetNotice" class="verdict-warning-banner">
+          <div class="banner-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="12"/></svg>
+          </div>
+          <div class="banner-body">
+            <b>Dataset profiles are not APK files or analysis results.</b>
+            <span>Labels remain the source values. The summaries below describe the supplied CSV only; they are not DroidTTP malware predictions, classifier accuracy, or proof of app behavior. No APK binaries are included in this dataset.</span>
+          </div>
+        </div>
+
+        <div id="datasetSummaryCards" class="metrics-grid">
+          <div class="metric-card"><span class="metric-label">DATASET</span><b class="metric-val">Loading</b><span class="metric-meta">Reading local archive</span></div>
+        </div>
+
+        <div class="overview-dual-grid dataset-summary-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Source Label Counts</h3>
+                <p class="panel-subtitle">Raw label values as stored in the CSV; no meaning inferred.</p>
+              </div>
+            </div>
+            <div id="datasetLabelStats" class="dataset-label-stats"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Descriptive Feature Means</h3>
+                <p class="panel-subtitle">Numeric CSV feature averages grouped by raw source label.</p>
+              </div>
+            </div>
+            <div id="datasetFeatureStats" class="table-container"></div>
+          </div>
+        </div>
+
+        <div class="section-toolbar dataset-record-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Dataset Profiles <span id="datasetRecordCount" class="count-pill">0</span></h2>
+            <p class="section-sub" id="datasetSourceLabel">CSV record view</p>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="datasetSearch" class="search-input" placeholder="Search package name or SHA-256" aria-label="Search dataset profiles">
+            </div>
+            <select id="datasetLabelFilter" class="select-input" aria-label="Filter by source label">
+              <option value="all">All source labels</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>PACKAGE PROFILE</th>
+                <th>SOURCE LABEL</th>
+                <th>API CALLS</th>
+                <th>PERMISSIONS</th>
+                <th>SENSITIVE PERMISSIONS</th>
+                <th>VT DETECTIONS (SOURCE FIELD)</th>
+                <th class="actions-col">DETAILS</th>
+              </tr>
+            </thead>
+            <tbody id="datasetRows"></tbody>
+          </table>
+        </div>
+        <div id="datasetEmpty" class="empty-state" hidden>
+          <h3>No matching dataset profiles</h3>
+          <p>Try a different label or search query.</p>
+        </div>
+        <div class="dataset-pagination">
+          <button type="button" class="button secondary" id="datasetPreviousBtn">Previous</button>
+          <span id="datasetPageInfo">Page 1</span>
+          <button type="button" class="button secondary" id="datasetNextBtn">Next</button>
+        </div>
+      </section>
+
+      <!-- VIEW 4: Analysis Page (Per-Sample 9 Tabs Workspace) -->
+      <section id="analysisPage" class="content-view" hidden>
+        <!-- Unselected Empty State -->
+        <div id="analysisEmpty" class="empty-state">
+          <div class="empty-icon-wrap">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>
+          </div>
+          <h3>Select a sample to inspect technical findings</h3>
+          <p>Choose an APK from the Samples inventory or select a case to upload an authorized application package.</p>
+          <button class="button primary" data-go="samples">Select Sample</button>
+        </div>
+
+        <!-- Populated Analysis Content -->
+        <div id="analysisContent" hidden>
+          <!-- Header Bar -->
+          <div class="sample-inspection-header">
+            <div class="sample-title-meta">
+              <span class="inspection-eyebrow">STATIC ANALYSIS WORKSPACE</span>
+              <h2 id="analysisName" class="sample-filename">sample.apk</h2>
+              <div class="hash-row">
+                <span class="hash-tag">SHA-256</span>
+                <code id="analysisHash" class="hash-code"></code>
+                <button class="icon-text-btn" id="copySampleHashBtn" title="Copy SHA-256">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="inspection-actions">
+              <span id="analysisStatusBadge" class="status-chip"></span>
+              <button class="button secondary" id="downloadSampleBtn" type="button">Download APK</button>
+              <button class="button secondary" id="analysisReportBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export Report</span>
+              </button>
+              <button class="button secondary" id="deleteSampleBtn" type="button">Delete Sample</button>
+              <button class="button primary" id="analysisAddMappingBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Add Mapping</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Non-Malware Verdict Analyst Banner -->
+          <div class="verdict-warning-banner">
+            <div class="banner-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="banner-body">
+              <b>Analyst Caution: Static findings are leads, not a malware verdict.</b>
+              <span>Declared permissions, exported components, and extracted text strings indicate potential capabilities only. They do not prove runtime execution or establish malicious intent.</span>
+            </div>
+          </div>
+
+          <!-- Progress Panel -->
+          <div class="analysis-progress-strip">
+            <div class="progress-labels">
+              <b id="progressLabel">Analysis Status</b>
+              <span id="progressPercent">100%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div class="progress-footer-info">
+              <span id="analysisTiming">Timing details</span>
+              <span id="analysisError" class="progress-error"></span>
+            </div>
+          </div>
+
+          <!-- 9 ANALYSIS TABS BAR -->
+          <div class="tabs-nav" role="tablist" aria-label="Sample Analysis Categories">
+            <button class="tab-button active" data-tab="summary" role="tab" aria-selected="true">Summary</button>
+            <button class="tab-button" data-tab="manifest" role="tab" aria-selected="false">Manifest</button>
+            <button class="tab-button" data-tab="permissions" role="tab" aria-selected="false">Permissions <span id="tabPermCount" class="tab-badge">0</span></button>
+            <button class="tab-button" data-tab="components" role="tab" aria-selected="false">Components <span id="tabCompCount" class="tab-badge">0</span></button>
+            <button class="tab-button" data-tab="certificates" role="tab" aria-selected="false">Certificates</button>
+            <button class="tab-button" data-tab="strings" role="tab" aria-selected="false">Strings <span id="tabStringCount" class="tab-badge">0</span></button>
+            <button class="tab-button" data-tab="network" role="tab" aria-selected="false">Network Indicators <span id="tabNetCount" class="tab-badge">0</span></button>
+            <button class="tab-button" data-tab="files" role="tab" aria-selected="false">Files &amp; Binaries</button>
+            <button class="tab-button" data-tab="tool-output" role="tab" aria-selected="false">Tool Output</button>
+          </div>
+
+          <!-- TAB 1: Summary -->
+          <div id="tabContentSummary" class="tab-pane active" role="tabpanel">
+            <div class="tab-grid-dual">
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h3 class="panel-title">Package Identity</h3>
+                    <p class="panel-subtitle">Extracted Android archive metadata.</p>
+                  </div>
+                  <span id="manifestEncodingBadge" class="tag">Text XML</span>
+                </div>
+                <div id="summaryMetaGrid" class="summary-meta-grid"></div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h3 class="panel-title">Cryptographic Hashes</h3>
+                    <p class="panel-subtitle">CTI identification hashes for sample correlation.</p>
+                  </div>
+                </div>
+                <div id="summaryHashGrid" class="summary-hash-grid"></div>
+
+                <div class="panel-header sub-head">
+                  <div>
+                    <h3 class="panel-title">Provenance &amp; Parser Limitations</h3>
+                  </div>
+                </div>
+                <div id="provenanceContent" class="provenance-block"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Manifest -->
+          <div id="tabContentManifest" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">AndroidManifest.xml Declaration</h3>
+                  <p class="panel-subtitle">Parsed structure from application text manifest.</p>
+                </div>
+                <span id="manifestKindChip" class="status-chip"></span>
+              </div>
+              <div id="manifestSummaryBlock" class="manifest-summary-card"></div>
+              <div class="code-box">
+                <div class="code-box-header">
+                  <span>MANIFEST OVERVIEW</span>
+                  <button class="icon-text-btn" id="copyManifestJsonBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Copy JSON</span>
+                  </button>
+                </div>
+                <pre id="manifestCodeView" class="code-block"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: Permissions -->
+          <div id="tabContentPermissions" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Declared Android Permissions</h3>
+                  <p class="panel-subtitle">Permissions requested in manifest; request does not prove runtime invocation.</p>
+                </div>
+                <input id="permSearch" class="field search-field" placeholder="Filter permissions...">
+              </div>
+              <div id="permissionsList" class="permissions-grid"></div>
+            </div>
+          </div>
+
+          <!-- TAB 4: Components -->
+          <div id="tabContentComponents" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Android Components &amp; Exported Status</h3>
+                  <p class="panel-subtitle">Declared Activities, Services, Broadcast Receivers, and Content Providers.</p>
+                </div>
+                <input id="compSearch" class="field search-field" placeholder="Filter components...">
+              </div>
+              <div id="componentsList" class="components-grid"></div>
+            </div>
+          </div>
+
+          <!-- TAB 5: Certificates -->
+          <div id="tabContentCertificates" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Signing Artifacts &amp; Signature Files</h3>
+                  <p class="panel-subtitle">Presence of META-INF signing digests in APK archive.</p>
+                </div>
+              </div>
+              <div class="disclaimer-callout">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <p><b>Verification Scope Notice:</b> Static intake verifies the physical presence of archive signing artifacts. Cryptographic validation of certificate authority chains and certificate expiry is not performed by this static intake analyzer.</p>
+              </div>
+              <div id="certificatesList" class="detail-list"></div>
+            </div>
+          </div>
+
+          <!-- TAB 6: Strings -->
+          <div id="tabContentStrings" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Extracted Text Strings</h3>
+                  <p class="panel-subtitle">Bounded extraction from packaged XML, JSON, text, and properties files.</p>
+                </div>
+                <input id="stringSearch" class="field search-field" placeholder="Search extracted strings...">
+              </div>
+              <div id="stringsList" class="strings-table-wrap"></div>
+            </div>
+          </div>
+
+          <!-- TAB 7: Network Indicators -->
+          <div id="tabContentNetwork" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Extracted Network Indicators (Defanged)</h3>
+                  <p class="panel-subtitle">Parsed URLs, domain names, and IP addresses. Defanged by default to prevent accidental navigation.</p>
+                </div>
+              </div>
+              <div class="disclaimer-callout">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <p><b>Static String Indicator:</b> These indicators were extracted from packaged text resources. They indicate network addresses embedded in the package, not live runtime communication.</p>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>INDICATOR TYPE</th>
+                      <th>DEFANGED VALUE</th>
+                      <th>ORIGIN LOCATION</th>
+                      <th class="actions-col">ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="networkIndicatorRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 8: Files & Binaries -->
+          <div id="tabContentFiles" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Binary &amp; Architecture Inventory</h3>
+                  <p class="panel-subtitle">DEX bytecode files and compiled native ELF shared libraries (.so).</p>
+                </div>
+              </div>
+              <div id="filesInventoryContent" class="files-inventory-grid"></div>
+            </div>
+          </div>
+
+          <!-- TAB 9: Tool Output -->
+          <div id="tabContentToolOutput" class="tab-pane" role="tabpanel" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Raw Structured Analysis Output</h3>
+                  <p class="panel-subtitle">Full JSON payload produced by isolated parser subprocess.</p>
+                </div>
+                <button class="icon-text-btn" id="copyRawAnalysisJsonBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy Full JSON</span>
+                </button>
+              </div>
+              <div class="code-box">
+                <pre id="rawJsonBlock" class="code-block"></pre>
+              </div>
+              <div class="unsupported-box">
+                <b>Explicit Limitations &amp; Unsupported Capabilities</b>
+                <ul id="unsupportedList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- ATT&CK MAPPINGS REVIEW SECTION (Always visible underneath tabs) -->
+          <div class="panel section-margin">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">MITRE ATT&amp;CK Mobile · Candidate Mappings</h3>
+                <p class="panel-subtitle">Review suggested TTPs, calibrate confidence, attach rationale, or add manual mappings.</p>
+              </div>
+              <button class="button secondary" id="addMappingBtnInline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Add Manual Mapping</span>
+              </button>
+            </div>
+            <div id="sampleMappings" class="mapping-cards-grid"></div>
+          </div>
+
+          <!-- SAMPLE EVIDENCE REGISTER -->
+          <div class="panel section-margin">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Sample Evidence Register <span id="sampleEvidenceCount" class="count-pill">0</span></h3>
+                <p class="panel-subtitle">Observed facts, locations, and confidence levels for this sample.</p>
+              </div>
+              <input id="sampleEvidenceSearch" class="field search-field" placeholder="Filter sample evidence...">
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>TYPE</th>
+                    <th>VALUE (DEFANGED)</th>
+                    <th>SOURCE &amp; LOCATION</th>
+                    <th>CONFIDENCE</th>
+                    <th>ANALYST NOTES</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="sampleEvidenceRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: ATT&CK Mobile Catalogue Page -->
+      <section id="attackPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">MITRE ATT&amp;CK Mobile · Android Matrix</h2>
+            <p id="taxonomyMeta" class="section-sub">Versioned local catalogue</p>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="techniqueSearch" class="search-input" placeholder="Search technique ID, name, tactic, or description...">
+            </div>
+          </div>
+        </div>
+
+        <div class="verdict-warning-banner">
+          <div class="banner-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="banner-body">
+            <b>Taxonomy Version Notice:</b>
+            <span>The local catalogue represents a versioned Android-specific ATT&amp;CK subset. Mappings link to evidence and are preserved across taxonomy updates for reproducibility. Verify official descriptions against the <a href="https://attack.mitre.org/matrices/mobile/android/" target="_blank" rel="noreferrer">MITRE ATT&amp;CK Android Matrix</a>.</span>
+          </div>
+        </div>
+
+        <div id="techniqueGroups" class="technique-tactics-layout"></div>
+      </section>
+
+      <!-- VIEW 6: Evidence Register Page -->
+      <section id="evidencePage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Master Evidence Register</h2>
+            <p class="section-sub">Search extracted static indicators, source locations, and analyst annotations across authorized cases.</p>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="evidenceSearch" class="search-input" placeholder="Search value, note, source, location...">
+            </div>
+            <select id="evidenceKindFilter" class="select-input">
+              <option value="all">All Evidence Types</option>
+              <option value="permission">Permissions</option>
+              <option value="component">Components</option>
+              <option value="url">URLs</option>
+              <option value="domain">Domains</option>
+              <option value="ip">IP Addresses</option>
+              <option value="signing_artifact">Signing Artifacts</option>
+              <option value="analysis_note">Analysis Notes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TYPE</th>
+                <th>VALUE (DEFANGED)</th>
+                <th>SOURCE</th>
+                <th>LOCATION</th>
+                <th>TIMESTAMP</th>
+                <th>CONFIDENCE</th>
+                <th>ANALYST NOTES</th>
+                <th>LINKED TTP</th>
+              </tr>
+            </thead>
+            <tbody id="evidenceRows"></tbody>
+          </table>
+        </div>
+        <div id="evidenceEmpty" class="empty-state" hidden>
+          <div class="empty-icon-wrap">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <h3>No evidence items found</h3>
+          <p>Evidence items appear after static APK intake completes.</p>
+        </div>
+      </section>
+
+      <!-- VIEW 7: Reports & Exports Page -->
+      <section id="reportsPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Traceable Intelligence Reports</h2>
+            <p class="section-sub">Generate and download reproducible CTI reports in standalone HTML and structured JSON.</p>
+          </div>
+        </div>
+
+        <div class="verdict-warning-banner">
+          <div class="banner-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="banner-body">
+            <b>Reporting Provenance:</b>
+            <span>Reports explicitly segregate observed static facts, inferred capabilities, unreviewed candidate suggestions, rejected mappings, and analyst conclusions. Reports retain the taxonomy version used at analysis time.</span>
+          </div>
+        </div>
+
+        <div id="reportList" class="reports-grid"></div>
+      </section>
+
+      <!-- VIEW 8: Audit Activity Page -->
+      <section id="activityPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">Audit Trail &amp; Activity Log</h2>
+            <p class="section-sub">Chronological provenance records of APK uploads, analysis tasks, review decisions, and case modifications.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button id="refreshActivityBtn" class="button secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Refresh Log</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div id="activityTimeline" class="activity-timeline-feed"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 9: Settings Page -->
+      <section id="settingsPage" class="content-view" hidden>
+        <div class="section-toolbar">
+          <div class="toolbar-left">
+            <h2 class="section-heading">System Settings &amp; Governance</h2>
+            <p class="section-sub">Operational resource boundaries, taxonomy synchronization state, and integration controls.</p>
+          </div>
+        </div>
+
+        <div class="settings-cards-grid">
+          <div class="panel">
+            <div class="panel-eyebrow">OPERATIONAL BOUNDARIES</div>
+            <h3 class="panel-title">Upload &amp; Retention Policy</h3>
+            <div id="settingsValues" class="detail-list"></div>
+            <form id="retentionForm" class="inline-form">
+              <div class="field-group">
+                <label for="retentionDays">Sample Retention Days</label>
+                <input id="retentionDays" type="number" min="0" max="3650" required>
+                <small>Set to 0 to disable automatic sample retention.</small>
+              </div>
+              <button class="button primary" type="submit">Update Policy</button>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="panel-eyebrow">INTEGRATIONS</div>
+            <h3 class="panel-title">Sandbox &amp; External Feeds</h3>
+            <div id="integrationStatus" class="detail-list"></div>
+            <div class="disclaimer-callout compact">
+              <p><b>Air-gap Policy:</b> External lookups are disabled by default. Samples and extracted indicators are never submitted to third parties.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-eyebrow">TAXONOMY REFERENCE</div>
+            <h3 class="panel-title">ATT&amp;CK Mobile Framework</h3>
+            <div id="taxonomySettings" class="detail-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-eyebrow">AUTHENTICATION</div>
+            <h3 class="panel-title">Session &amp; Access Role</h3>
+            <div id="accessSettings" class="detail-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 10: Case Workspace View (When a case is opened) -->
+      <section id="caseWorkspacePage" class="content-view" hidden>
+        <div class="case-workspace-top">
+          <button class="back-nav-btn" id="backCaseList">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <span>Back to Cases</span>
+          </button>
+
+          <div class="case-header-content">
+            <div class="case-title-area">
+              <span class="inspection-eyebrow">INVESTIGATION CASE</span>
+              <h2 id="workspaceCaseName" class="case-headline">Case Title</h2>
+              <p id="workspaceCaseInfo" class="case-meta-line"></p>
+            </div>
+            <div class="case-header-actions">
+              <button class="button secondary" id="caseWorkspaceReportBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Case Report</span>
+              </button>
+              <button class="button secondary" id="editCaseBtn">Edit Case</button>
+              <button class="button primary" id="uploadBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Upload APK</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel section-margin">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title">Case APK Samples <span id="caseSampleCount" class="count-pill">0</span></h3>
+              <p class="panel-subtitle">Authorized application packages associated with this investigation.</p>
+            </div>
+          </div>
+          <div id="caseSampleList" class="compact-feed"></div>
+          <div id="caseSampleEmpty" class="empty-state compact" hidden>
+            <h3>No APKs uploaded to this case</h3>
+            <p>Upload an authorized Android package to initiate isolated static analysis.</p>
+            <button class="button primary" id="emptyUploadBtn">Upload APK</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Hidden File Input for APK Upload -->
+  <input id="apkInput" type="file" accept=".apk,application/vnd.android.package-archive" hidden>
+
+  <!-- MODAL: Add APK Sample -->
+  <dialog id="sampleUploadDialog" class="modal">
+    <form id="sampleUploadForm" class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">LOCAL SAMPLE INTAKE</span>
+          <h3 class="modal-title">Add APK Sample</h3>
+        </div>
+        <button type="button" class="modal-close" data-close="sampleUploadDialog" aria-label="Close Modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-help">The APK is stored in this instance's private data directory and inspected as an archive. Sample code is never executed.</p>
+        <div class="field-group">
+          <label for="sampleCaseSelect">Case <span class="required">*</span></label>
+          <select id="sampleCaseSelect" name="case_id" required></select>
+        </div>
+        <div class="field-group">
+          <label for="sampleFileInput">APK file <span class="required">*</span></label>
+          <input id="sampleFileInput" name="file" type="file" accept=".apk,application/vnd.android.package-archive" required>
+        </div>
+        <button type="button" class="button secondary" id="sampleCreateCaseBtn">Create a case first</button>
+        <p id="sampleUploadError" class="error-banner" role="alert" hidden></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" data-close="sampleUploadDialog">Cancel</button>
+        <button class="button primary" id="sampleUploadSubmit" type="submit">Upload and Inspect</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="datasetProfileDialog" class="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">SOURCE CSV PROFILE · NOT AN APK</span>
+          <h3 class="modal-title" id="datasetProfileTitle">Dataset profile</h3>
+        </div>
+        <button type="button" class="modal-close" data-close="datasetProfileDialog" aria-label="Close Modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="datasetProfileBody" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="button secondary" data-close="datasetProfileDialog">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Case Dialog (Create / Edit) -->
+  <dialog id="caseDialog" class="modal">
+    <form id="caseForm" class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow" id="caseDialogEyebrow">NEW INVESTIGATION</span>
+          <h3 class="modal-title" id="caseDialogTitle">Create Investigation Case</h3>
+        </div>
+        <button type="button" class="modal-close" data-close="caseDialog" aria-label="Close Modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="field-group">
+          <label for="caseTitleInput">Case Title <span class="required">*</span></label>
+          <input id="caseTitleInput" name="title" required maxlength="160" placeholder="e.g. Investigation: Operation Cobalt Banking Trojan">
+        </div>
+        <div class="field-group">
+          <label for="caseSourceInput">Acquisition / Source Context</label>
+          <input id="caseSourceInput" name="source" maxlength="500" placeholder="e.g. Telemetry upload, OSINT report, Incident #4029">
+        </div>
+        <div class="field-group">
+          <label for="caseDescInput">Analyst Notes &amp; Investigation Scope</label>
+          <textarea id="caseDescInput" name="description" rows="3" maxlength="4000" placeholder="Record investigation context, provenance, and hypotheses..."></textarea>
+        </div>
+        <div class="form-grid-dual">
+          <div class="field-group">
+            <label for="caseOwnerInput">Assigned Analyst</label>
+            <input id="caseOwnerInput" name="owner" maxlength="120" placeholder="analyst">
+          </div>
+          <div class="field-group">
+            <label for="caseHandlingSelect">Handling Marking</label>
+            <select id="caseHandlingSelect" name="handling">
+              <option value="TLP:CLEAR">TLP:CLEAR (Public)</option>
+              <option value="TLP:GREEN">TLP:GREEN (Community)</option>
+              <option value="TLP:AMBER" selected>TLP:AMBER (Strict Need-to-Know)</option>
+              <option value="TLP:RED">TLP:RED (Restricted to Named Recipients)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="caseTagsInput">Tags <small>(Comma-separated, up to 20)</small></label>
+          <input id="caseTagsInput" name="tags" maxlength="500" placeholder="android, trojan, banking, campaign-a">
+        </div>
+        <div class="field-group" id="caseStatusField" hidden>
+          <label for="caseStatusSelect">Investigation Status</label>
+          <select id="caseStatusSelect" name="status">
+            <option value="active">Active</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <p id="caseError" class="error-banner" role="alert" hidden></p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="button secondary" data-close="caseDialog">Cancel</button>
+        <button class="button primary" type="submit">Save Case</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL: Add Manual ATT&CK Mapping -->
+  <dialog id="mappingDialog" class="modal">
+    <form id="mappingForm" class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">ANALYST AUTHORED TTP</span>
+          <h3 class="modal-title">Attach Manual ATT&amp;CK Mapping</h3>
+        </div>
+        <button type="button" class="modal-close" data-close="mappingDialog" aria-label="Close Modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="field-group">
+          <label for="mappingTechniqueSelect">ATT&amp;CK Mobile Technique <span class="required">*</span></label>
+          <select id="mappingTechniqueSelect" name="technique_id" required></select>
+        </div>
+        <div class="field-group">
+          <label for="mappingConfidenceSelect">Analyst Confidence Level</label>
+          <select id="mappingConfidenceSelect" name="confidence">
+            <option value="low">Low (Indirect or single permission indicator)</option>
+            <option value="moderate" selected>Moderate (Corroborated by multiple static artifacts)</option>
+            <option value="high">High (Direct code reference or verified behavior)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="mappingRationaleInput">Analyst Rationale <span class="required">*</span></label>
+          <textarea id="mappingRationaleInput" name="rationale" rows="4" maxlength="4000" required placeholder="Explain why the technical evidence warrants this ATT&amp;CK mapping..."></textarea>
+        </div>
+        <p id="mappingError" class="error-banner" role="alert" hidden></p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="button secondary" data-close="mappingDialog">Cancel</button>
+        <button class="button primary" type="submit">Add Mapping</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast-notice" role="status" aria-live="polite"></div>
+
+  <!-- Application Controller -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

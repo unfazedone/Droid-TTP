@@ -1,0 +1,34 @@
+[Unit]
+Description=DroidTTP isolated static analysis queue worker
+After=network.target
+
+[Service]
+Type=simple
+User=droidttp
+Group=droidttp
+WorkingDirectory=/opt/droidttp
+Environment=DROIDTTP_PROCESS_ROLE=worker
+Environment=DROIDTTP_DATA_DIR=/var/lib/droidttp
+Environment=DROIDTTP_ANALYSIS_TIMEOUT_SECONDS=90
+ExecStart=/opt/droidttp/.venv/bin/python -m app.queue_worker
+Restart=always
+RestartSec=5s
+
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateNetwork=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+ReadWritePaths=/var/lib/droidttp
+LimitNOFILE=4096
+MemoryMax=768M
+CPUQuota=100%
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target

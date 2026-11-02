@@ -1,0 +1,10 @@
+{
+  "name": "droidttp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Compatibility scripts for the Python DroidTTP application.",
+  "scripts": {
+    "start": "python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
+    "dev": "python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000"
+  }
+}

@@ -1,0 +1,39 @@
+# ==============================================================================
+# DroidTTP - Systemd Service Unit
+# Secure, sandboxed production service for Linux bare-metal or cloud VMs
+# Path: /etc/systemd/system/droidttp.service
+# ==============================================================================
+
+[Unit]
+Description=DroidTTP - Android Application to TTP Mapping Service
+Documentation=https://github.com/droidttp/droidttp
+After=network.target
+
+[Service]
+Type=simple
+User=droidttp
+Group=droidttp
+WorkingDirectory=/opt/droidttp
+EnvironmentFile=/opt/droidttp/.env
+ExecStart=/opt/droidttp/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 2 --proxy-headers
+Restart=always
+RestartSec=5s
+
+# Security Hardening & Sandboxing
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+ReadWritePaths=/var/lib/droidttp
+
+# Resource Limits
+LimitNOFILE=65536
+MemoryMax=2G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target
