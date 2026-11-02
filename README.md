@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DroidTTP: Local APK Sample Console
 
 DroidTTP is a local-first console for collecting and inspecting authorized Android application packages (APKs). Uploads are stored on the local instance, hashed, searchable, and statically inspected as ZIP archives. Uploaded sample code is never executed, and samples or extracted indicators are not sent to third parties.
@@ -179,3 +180,7 @@ data/                     Private database and uploaded sample storage (created 
 DEPLOYMENT.md             Full production deployment and operations manual
 README.md                 Workbench reference and quickstart guide
 ```
+=======
+# Droid-TTP
+Mapping Android Applications to MITRE ATT&amp;CK TTPs for Cyber Threat Intelligence
+>>>>>>> 9ab07b5e8297abc38d4801121b510c20bbc81f94
